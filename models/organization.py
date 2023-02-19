@@ -11,7 +11,7 @@ class Organization(Base):
     __tablename__ = 'organizations'
 
     id = Column(Integer, primary_key=True,  autoincrement=True)
-    name = Column(String(255), nullable=False)
+    name = Column(String(255), nullable=False, unique=True)
     password = Column(String(255), nullable=False)
     created_at = Column(DateTime, default=datetime.datetime.now)
     updated_at = Column(
