@@ -18,6 +18,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
+from models.organization import Organization, OrganizationBusinessHours, OrganizationExceptionDays
+from models.user import User
 import db
 target_metadata = db.Base.metadata
 
