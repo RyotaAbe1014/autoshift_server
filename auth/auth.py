@@ -1,7 +1,9 @@
 from fastapi import APIRouter, HTTPException, status
 from fastapi.param_functions import Depends
-from fastapi.security.oauth2 import OAuth2PasswordRequestForm
+from fastapi.param_functions import Body
 from sqlalchemy.orm.session import Session
+from pydantic import BaseModel
+from typing import Any, Dict, List, Optional, Union
 from db import get_db
 from models.organization import Organization
 from .hash import Hash
@@ -11,10 +13,17 @@ router = APIRouter(
     tags=['authentication']
 )
 
+
+class OAuth2PasswordRequestCustomForm(BaseModel):
+    name: str
+    password: str
+
+
 @router.post('/token')
-def get_token(request: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+def get_token(request: OAuth2PasswordRequestCustomForm = Body(), db: Session = Depends(get_db)):
+    print(request)
     organization = db.query(Organization).filter(
-        Organization.name == request.username).first()
+        Organization.name == request.name).first()
     if not organization:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
