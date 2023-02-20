@@ -1,9 +1,11 @@
 from sqlalchemy.orm import Session
+from typing import Optional, List
 from models.user import User as UserModel
-import schemas.user as UserCreate
+from  schemas.user import UserCreate as UserCreateSchema
+from  schemas.user import User as UserSchema
 
 
-def create_user(db: Session, user_create: UserCreate, organization_id: int) -> UserModel:
+def create_user(db: Session, user_create: UserCreateSchema, organization_id: int) -> UserModel:
     user = UserModel(
         name=user_create.name,
         email=user_create.email,
@@ -14,3 +16,8 @@ def create_user(db: Session, user_create: UserCreate, organization_id: int) -> U
     db.commit()
     db.refresh(user)
     return user
+
+
+def get_users(db: Session, organization_id: int) -> Optional[List[UserSchema]]:
+    users = db.query(UserModel).filter(UserModel.organization_id == organization_id).all()
+    return users
