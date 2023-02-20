@@ -20,8 +20,7 @@ class OAuth2PasswordRequestCustomForm(BaseModel):
 
 
 @router.post('/token')
-def get_token(request: OAuth2PasswordRequestCustomForm = Body(), db: Session = Depends(get_db)):
-    print(request)
+def get_token(request: OAuth2PasswordRequestCustomForm = Body(...), db: Session = Depends(get_db)):
     organization = db.query(Organization).filter(
         Organization.name == request.name).first()
     if not organization:

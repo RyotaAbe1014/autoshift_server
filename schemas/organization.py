@@ -8,3 +8,10 @@ class OrganizationCreate(BaseModel):
 
     class Config:
       orm_mode = True
+
+
+class Organization(OrganizationCreate):
+    id: int
+
+    class Config:
+      orm_mode = True
