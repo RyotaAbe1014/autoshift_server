@@ -12,3 +12,8 @@ def create_organization(db: Session, organization_create: OrganizationSchema.Org
     db.commit()
     db.refresh(organization)
     return organization
+
+
+def get_organization_id(db: Session, organization_name: str) -> int:
+    organization = db.query(OrganizationModel).filter(OrganizationModel.name == organization_name).first()
+    return organization.id

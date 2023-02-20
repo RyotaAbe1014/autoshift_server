@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from settings.custom_route import CustomRoute
 from auth import auth
-from routers import organization
+from routers import organization, user
 
 app = FastAPI()
 app.router.route_class = CustomRoute
@@ -21,3 +21,4 @@ app.add_middleware(
 
 app.include_router(auth.router)
 app.include_router(organization.router)
+app.include_router(user.router)

@@ -21,10 +21,10 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 
-def decode_token(bearer_token):
+def decode_token(token):
     try:
-        # 'Bearer 'の文字列を取り除く
-        token = bearer_token.split(" ")[1]
+        # 'Bearer 'の文字列を取り除く(不要)
+        # token = bearer_token.split(" ")[1]
         # JWTのデコード
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload
