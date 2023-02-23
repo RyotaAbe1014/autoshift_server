@@ -6,7 +6,9 @@ from settings.custom_route import CustomRoute
 from schemas.user import UserCreate, User
 from cruds.user import create_user as crud_create_user
 from cruds.user import get_users as crud_get_users
+from cruds.user import get_user as crud_get_user
 from cruds.user import delete_user as crud_delete_user
+from cruds.user import update_user as crud_update_user
 
 from cruds.organization import get_organization_id
 
@@ -38,3 +40,22 @@ async def get_users(token: str = Depends(oauth2_scheme)):
 async def delete_user(user_id: int = Path(...), token: str = Depends(oauth2_scheme)):
     crud_delete_user(db=session, user_id=user_id)
     return {"message": "success"}
+
+
+# ユーザー情報取得
+@router.get("/{user_id}", response_model=User)
+async def get_user(user_id: int = Path(...), token: str = Depends(oauth2_scheme)):
+    decoded_token = decode_token(token)
+    organization_id = get_organization_id(
+        db=session, organization_name=decoded_token["sub"])
+    return crud_get_user(db=session, organization_id=organization_id, user_id=user_id)
+    
+
+
+# ユーザー編集
+@router.put("/{user_id}", response_model=User)
+async def update_user(user_id: int = Path(...), token: str = Depends(oauth2_scheme), user_create: UserCreate = Body(...)):
+    decoded_token = decode_token(token)
+    organization_id = get_organization_id(
+        db=session, organization_name=decoded_token["sub"])
+    return crud_update_user(db=session, user_id=user_id, user_create=user_create, organization_id=organization_id)

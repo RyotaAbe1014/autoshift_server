@@ -24,6 +24,12 @@ def get_users(db: Session, organization_id: int) -> Optional[List[UserSchema]]:
     return users
 
 
+def get_user(db: Session, organization_id: int, user_id: int) -> UserModel:
+    user = db.query(UserModel).filter(
+        UserModel.organization_id == organization_id, UserModel.id == user_id).first()
+    return user
+
+
 def delete_user(db: Session, user_id: int) -> None:
     user = db.query(UserModel).filter(UserModel.id == user_id).first()
     if user:
@@ -31,3 +37,17 @@ def delete_user(db: Session, user_id: int) -> None:
         db.commit()
         return
     return None
+
+
+def update_user(db: Session, user_id: int, user_create: UserCreateSchema, organization_id: int) -> UserModel:
+    user = db.query(UserModel).filter(UserModel.id == user_id).first()
+    if user:
+        user.name = user_create.name
+        user.email = user_create.email
+        user.phone_number = user_create.phone_number
+        user.organization_id = organization_id
+        db.commit()
+        db.refresh(user)
+        return user
+    return None
+    
