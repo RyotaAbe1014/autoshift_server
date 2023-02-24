@@ -2,6 +2,7 @@ from db import Base
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 import datetime
+from models.shift import Shift
 
 
 class User(Base):
@@ -17,5 +18,7 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.datetime.now)
     updated_at = Column(
         DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now)
-    organization_id = Column(Integer,ForeignKey('organizations.id', ondelete='CASCADE'), nullable=False)
+    organization_id = Column(Integer, ForeignKey(
+        'organizations.id', ondelete='CASCADE'), nullable=False)
     organization = relationship("Organization", back_populates="users")
+    shifts = relationship("Shift", back_populates="user")

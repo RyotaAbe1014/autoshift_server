@@ -20,6 +20,7 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 from models.organization import Organization, OrganizationBusinessHours, OrganizationExceptionDays
 from models.user import User
+from models.shift import Shift
 import db
 target_metadata = db.Base.metadata
 

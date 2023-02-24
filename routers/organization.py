@@ -4,7 +4,6 @@ from typing import List
 from db import session
 from schemas.organization import OrganizationCreate, Organization
 from cruds.organization import create_organization as create_organization_crud
-from cruds.organization import get_organization_id as create_organization_crud
 from settings.custom_route import CustomRoute
 
 
@@ -17,11 +16,10 @@ async def create_organization(organization: OrganizationCreate = Body()):
     return organization
 
 
-# 会社情報取得
+# # 会社情報取得
 # @router.get("/", response_model=Organization)
 # async def get_organization(token: str = Depends(oauth2_scheme)):
 #     authorization_data = decode_token(token)
 #     organization_id: int = authorization_data["organization_id"]
-
 #     return organization
 
