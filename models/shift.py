@@ -8,8 +8,9 @@ class Shift(Base):
     __tablename__ = 'shifts'
 
     id = Column(Integer, primary_key=True)
-    start_time = Column(DateTime)
-    end_time = Column(DateTime)
+    date = Column(Date)
+    start_time = Column(Time)
+    end_time = Column(Time)
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     user = relationship("User", back_populates="shifts")
     created_at = Column(DateTime, default=datetime.datetime.now)

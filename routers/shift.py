@@ -11,7 +11,7 @@ router = APIRouter(prefix="/shifts", tags=["shifts"], route_class=CustomRoute)
 
 
 # シフト新規追加
-@router.post("/", status_code=201, response_model=List[Shift])
+@router.post("/", status_code=201)
 async def create_shift(token: str = Depends(oauth2_scheme), shift_create_list: List[ShiftCreate] = Body(...)):
     return crud_create_shift(db=session, shift_create_list=shift_create_list)
 
