@@ -1,16 +1,17 @@
 from pydantic import BaseModel
-import datetime
+from datetime import datetime
+from typing import Optional
 
 class Shift(BaseModel):
-    id: int
-    start_time: datetime
-    end_time: datetime
+    id: Optional[int]
+    start_time: Optional[datetime]
+    end_time: Optional[datetime]
     user_id: int
-    created_at: datetime
-    updated_at: datetime
 
 
 class ShiftCreate(BaseModel):
     start_time: datetime
     end_time: datetime
     user_id: int
+
+
