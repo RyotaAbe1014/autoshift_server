@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from typing import Optional, List
 from models.shift import Shift as ShiftModel
+from models.organization import Organization as OrganizationModel
+from models.user import User as UserModel
 from schemas.shift import ShiftCreate as ShiftCreateSchema
 from schemas.shift import Shift as ShiftSchema
 from typing import List
@@ -35,7 +37,6 @@ def get_shifts(db: Session, user_id: int) -> List[ShiftModel]:
     """
     来週のシフトを取得
     """
-    print("user_id: ", user_id)
     # 来週の日曜日の日付を取得
     today = datetime.date.today()
     sunday = today + datetime.timedelta(days=6-today.weekday())
@@ -54,4 +55,18 @@ def get_shifts(db: Session, user_id: int) -> List[ShiftModel]:
             shift_list.append(shift)
         else:
             shift_list.append(ShiftModel(user_id=user_id, date=date))
+    return shift_list
+
+
+# その日のシフトを取得
+def get_shifts_target_date(db: Session, organization_id: int, target_date: str) -> List[ShiftModel]:
+    """
+    検索日のシフトを取得
+    """
+    # 検索日の日付を取得
+    date = datetime.datetime.strptime(target_date, '%Y-%m-%d').date()
+
+    shift_list = db.query(ShiftModel).join(UserModel).filter(
+        UserModel.organization_id == organization_id, ShiftModel.date == date).all()
+    
     return shift_list
